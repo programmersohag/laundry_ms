@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+<th:block th:replace="~{layouts/header}">
+
+</th:block>
+<body>
+<!-- Main Content -->
+<div class="content">
+  <!-- The content from other templates will be injected here -->
+  <div layout:fragment="content"></div>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{layouts/footer}"></div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <title>Laundry Management System-CI</title>
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}"
+          rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" type="text/css">
+    <!-- Datatables-->
+    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css">
+</head>
+
+<body class="bg-gradient-dark">
+
+<div class="container">
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-6 col-lg-6 col-md-9 mt-3">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <div class="p-5">
+                        <div class="text-center py-3">
+                            <img alt="Logo"
+                                 class="w-25 px-3 rounded-circle mb-3" th:src="@{/img/logo.png}">
+                            <h1 class="h2 text-gray-900">Laundry System</h1>
+                            <h4 class="h4 text-primary my-3">Login</h4>
+                            <div th:if="${param.error}">
+                                Invalid username and password.</div>
+                            <div th:if="${param.logout}">
+                                You have been logged out.</div>
+                        </div>
+                        <form th:action="@{/login}" class="w-75 m-auto pt-3" method="post">
+                            <div class="form-group">
+                                <input aria-describedby="emailHelp" class="form-control"
+                                       id="username" name="username"
+                                       placeholder="Username" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="password"></label><input class="form-control" id="password"
+                                                                     name="password" placeholder="Password"
+                                                                     type="password">
+                            </div>
+                            <hr class="pt-3">
+                            <button class="btn btn-success btn-user btn-block" type="submit">
+                                Login
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

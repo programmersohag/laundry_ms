@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/base}" lang="en">
+<head>
+    <title>Contact Us - My Application</title>
+</head>
+<body>
+<div layout:fragment="content">
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
@@ -141,12 +148,12 @@
                             </div>
                         </div>
 
-                        <?php 
-                        
+                        <?php
+
                         $exp1 = $total_pengeluaran;
                         $exp2 = $total_pendapatan;
                         $exp3 = $exp1 - $exp2;
-                        
+
                         ?>
 
                         <!-- Total Profit (This year) -->
@@ -176,3 +183,6 @@
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
+
+</body>
+</html>
