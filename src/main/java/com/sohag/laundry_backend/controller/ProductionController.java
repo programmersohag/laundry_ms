@@ -3,6 +3,7 @@ package com.sohag.laundry_backend.controller;
 import com.sohag.laundry_backend.dto.ProductionDto;
 import com.sohag.laundry_backend.service.ProductionService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +17,13 @@ public class ProductionController {
         this.productionService = productionService;
     }
 
+    @GetMapping
+    public String production() {
+        return "views/production";
+    }
+
     @PostMapping
-    public String addEmployee(@RequestBody ProductionDto dto) {
+    public String addProduction(@RequestBody ProductionDto dto) {
         dto = productionService.doSave(dto);
         return "redirect:/customer";
     }

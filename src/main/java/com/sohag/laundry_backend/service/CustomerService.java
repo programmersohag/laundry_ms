@@ -7,6 +7,8 @@ import com.sohag.laundry_backend.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CustomerService {
 
@@ -28,8 +30,8 @@ public class CustomerService {
     }
 
     @Transactional
-    public CustomerDto doUpdate(Integer id, CustomerDto dto) throws NotFoundException {
-        Customer customer = findById(id);
+    public CustomerDto doUpdate(CustomerDto dto) throws NotFoundException {
+        Customer customer = findByCode(dto.getCustomerCode());
         customer.setName(dto.getName());
         customer.setAddress(dto.getAddress());
         customerRepository.save(customer);
@@ -38,5 +40,25 @@ public class CustomerService {
 
     public Customer findById(Integer id) throws NotFoundException {
         return customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
+    }
+
+    public Customer findByCode(String code) throws NotFoundException {
+        return customerRepository.findByCustomerCode(code).orElseThrow(() -> new NotFoundException("Customer not found"));
+    }
+
+    public List<CustomerDto> findAll() {
+        return customerRepository.findAllCustomer();
+    }
+
+    public String getCode(List<CustomerDto> customers) {
+        String code = "";
+        int len = customers.size();
+        if (len == 0) {
+            code = "P000";
+        } else {
+            int last_id = Integer.parseInt(customers.get(len - 1).getCustomerCode().substring(1, 4));
+            code = "P00" + (last_id + 2);
+        }
+        return code;
     }
 }

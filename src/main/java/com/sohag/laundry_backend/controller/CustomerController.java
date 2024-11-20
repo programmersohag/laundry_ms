@@ -3,11 +3,12 @@ package com.sohag.laundry_backend.controller;
 import com.sohag.laundry_backend.dto.CustomerDto;
 import com.sohag.laundry_backend.exception.NotFoundException;
 import com.sohag.laundry_backend.service.CustomerService;
-import com.sohag.laundry_backend.util.ApiResponse;
-import com.sohag.laundry_backend.util.ResponseUtil;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/customer")
@@ -19,19 +20,33 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @GetMapping
+    public String customer(Model model) {
+        List<CustomerDto> list = customerService.findAll();
+        model.addAttribute("customers", list);
+        model.addAttribute("code", customerService.getCode(list));
+        return "views/customer";
+    }
+
     @PostMapping
-    public String addCustomer(@RequestBody CustomerDto dto) {
-        dto = customerService.doSave(dto);
+    public String addCustomer(@ModelAttribute CustomerDto dto, RedirectAttributes redirect) {
+        try {
+            dto = customerService.doSave(dto);
+            redirect.addFlashAttribute("message", "Added Successfully");
+        } catch (Exception e) {
+            redirect.addFlashAttribute("error", e.getMessage());
+        }
         return "redirect:/customer";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<CustomerDto>> editCustomer(@PathVariable Integer id, @RequestBody CustomerDto dto) {
+    @PutMapping
+    public String editCustomer(@ModelAttribute CustomerDto dto, RedirectAttributes redirect) {
         try {
-            dto = customerService.doUpdate(id, dto);
-            return ResponseUtil.success(dto, "");
+            dto = customerService.doUpdate(dto);
+            redirect.addFlashAttribute("message", "Edited Successfully");
         } catch (NotFoundException e) {
-            return ResponseUtil.badRequest(null, e.getMessage());
+            redirect.addFlashAttribute("error", e.getMessage());
         }
+        return "redirect:/customer";
     }
 }
