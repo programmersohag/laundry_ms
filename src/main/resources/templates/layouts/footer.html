@@ -2,8 +2,8 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <p>Page rendered in <strong>{elapsed_time}</strong>seconds.
-            <span>&copy; Laundry Management System - <?php echo date('Y')?></span>
+            <!--<p>Page rendered in <strong>{elapsed_time}</strong>seconds.-->
+            <span th:utext="${'&copy; Laundry Management System -- ' + #dates.year(#dates.createNow())}"></span>
         </div>
     </div>
 </footer>
@@ -28,7 +28,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="@{/user/login">Logout</a>
+                <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
             </div>
         </div>
     </div>

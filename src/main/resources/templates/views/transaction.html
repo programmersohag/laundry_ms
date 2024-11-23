@@ -1,247 +1,269 @@
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>Contact Us - My Application</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
 
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex justify-content-between">
-                            <h4 class="my-auto font-weight-bold text-primary">Transaction Data</h4>
-                            <a href="#" class="btn btn-success shadow-sm" data-toggle="modal" data-target="#addTransaksi"><i
-                                class="fas fa-plus fa-sm text-white-500"></i> Add New Transaction</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr class="text-primary">
-                                            <th>#</th>
-                                            <th>Transc. ID</th>
-                                            <th>Customer</th>
-                                            <th>Employee</th>
-                                            <th>Weight</th>
-                                            <th>Total</th>
-                                            <th>Order</th>
-                                            <th>Finished</th>
-                                            <th class="actions">Actions</th>
-                                        </tr>
-                                    </thead>
-                                   
-                                    <tbody>
-                                        <?php
-                                            $no = 1;
-                                            foreach ($data_transaksi as $transaksi) {
-                                        ?>
-                                        <tr>
-                                            <th><?php echo $no++ ?></th>
-                                            <td>
-                                                <?php if ($transaksi->tgl_selesai == '0000-00-00') { ?>
-                                                    <span class="badge badge-danger">Not Finished Yet</span><br>
-                                                <?php } 
-                                                    echo $transaksi->transaksi_id;
-                                                ?>
-                                            </td>
-                                            <td>
-                                                <span class="row px-3 text-primary text-xs"><?php echo $transaksi->pelanggan_id ?></span>
-                                                <span class="row px-3"><?php echo $transaksi->nama_pelanggan ?></span>
-                                            </td>
-                                            <td>
-                                                <span class="row px-3 text-primary text-xs"><?php echo $transaksi->karyawan_id ?></span>
-                                                <span class="row px-3"><?php echo $transaksi->nama_karyawan ?></span>
-                                            </td>
-                                            <td><?php echo $transaksi->berat ?> KG</td>
-                                            <td>$<?php echo $transaksi->total ?></td>
-                                            <td><?php echo $transaksi->tgl_order ?></td>
-                                            <td><?php if ($transaksi->tgl_selesai == '0000-00-00') { echo '-'; } else { echo $transaksi->tgl_selesai; } ?></td>
-                                            <td class="action-icons">
-
-                                                <?php if ($transaksi->tgl_selesai == '0000-00-00') { ?>
-
-                                                <a target="blank" href="<?php echo base_url().'transaksi/print_nota/'.$transaksi->transaksi_id?>" class="btn btn-sm rounded-lg btn-primary mb-2"> Note</a><br>
-
-                                                <a href="<?php echo base_url().'transaksi/done/'.$transaksi->transaksi_id?>" class="btn btn-sm rounded-lg btn-success mb-2">Complete</a><br>
-
-                                                <?php } ?>
-                                                <a href="#" data-toggle="modal" data-target="#editTransaksi<?php echo $no-1 ?>"> 
-                                                    <i title="ubah" class="fas fa-edit text-lg text-info"></i>
-                                                </a>
-                                                <a href="<?php echo base_url().'transaksi/delete/'.$transaksi->transaksi_id?>"> 
-                                                    <i title="hapus" class="fas fa-trash text-lg text-danger"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- /.container-fluid -->
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between">
+                <h4 class="my-auto font-weight-bold text-primary">Transaction Data</h4>
+                <a class="btn btn-success shadow-sm" data-target="#addTransaction" data-toggle="modal" href="#"><i
+                        class="fas fa-plus fa-sm text-white-500"></i> Add New Transaction</a>
             </div>
-            <!-- End of Main Content -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table cellspacing="0" class="table table-bordered table-hover table-striped" id="dataTable"
+                           width="100%">
+                        <thead>
+                        <tr class="text-primary">
+                            <th>#</th>
+                            <th>Tx. ID</th>
+                            <th>Customer</th>
+                            <th>Employee</th>
+                            <th>Weight</th>
+                            <th>Total</th>
+                            <th>Order</th>
+                            <th>Finished</th>
+                            <th class="actions">Actions</th>
+                        </tr>
+                        </thead>
 
-            <!-- Modal for adding new data -->
-            <div class="modal fade" id="addTransaksi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="formAddTransaksi" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title font-weight-bold text-primary mx-3 mt-3" id="formAddTransaksiLabel">Input Transaction Data</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form name="form_add_transaksi" action="<?php echo base_url().'transaksi/add' ?>" method="post" class="user needs-validation mx-3 mb-4" novalidate>
-                            <div class="modal-body"> 
-                                <div class="form-group">
-                                    <label class="control-label text-primary">Customer</label>
-                                    <select class="form-control" name="pelanggan_id" required>
-                                        <option value="">--Please Select--</option>
-                                        <?php
+                        <tbody>
+                        <tr th:each="transaction, item : ${transactions}">
+                            <th th:text="${item.index+1}"></th>
+                            <td th:text="${transaction.id}"></td>
+                            <td th:if="${transaction.total == '0000-00-00'}">
+                                <span class="badge badge-danger">Not Finished Yet</span>
+                            </td>
+                            <td th:if="${transaction.total != '0000-00-00'}" th:text="${transaction.total}">
+                            </td>
+                            <td>
+                                <span class="row px-3 text-primary text-xs" th:text="${transaction.employeeId}"></span>
+                                <span class="row px-3" th:text="${transaction.employeeName}"></span>
+                            </td>
+                            <td>
+                                <span class="row px-3 text-primary text-xs" th:text="${transaction.customerId}"></span>
+                                <span class="row px-3" th:text="${transaction.customerName}"></span>
+                            </td>
+                            <td th:text="${transaction.weight}"></td>
+                            <td th:text="${transaction.total}"></td>
+                            <td th:text="${transaction.dateOfOrder}"></td>
+                            <td th:text="${transaction.dateOfDelivery}"></td>
+                            <td class="action-icons">
+                                <a class="btn btn-sm rounded-lg btn-primary mb-2"
+                                   th:href="@{/transaction/print_note/{id}(id=${transaction.id})}"
+                                   target="blank"> Note</a><br>
+
+                                <a class="btn btn-sm rounded-lg btn-success mb-2"
+                                   th:href="@{/transaction/done/{id}(id=${transaction.id})}">Complete</a>
+                                <br>
+                                <a th:attr="data-target=${'#editTransaction'+transaction.id}" data-toggle="modal" href="#">
+                                    <i class="fas fa-edit text-lg text-info" title="Edit"></i>
+                                </a>
+                                <a th:href="@{/transaction/delete/{id}(id=${transaction.id})}">
+                                    <i class="fas fa-trash text-lg text-danger" title="Remove"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for adding new data -->
+        <div aria-hidden="true" aria-labelledby="formAddTransaction" class="modal fade" data-backdrop="static"
+             data-keyboard="false"
+             id="addTransaction" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold text-primary mx-3 mt-3" id="formAddTransactionLabel">Input
+                            Transaction Data</h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="<?php echo base_url().'Transaction/add' ?>" class="user needs-validation mx-3 mb-4"
+                          method="post"
+                          name="form_add_Transaction" novalidate>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="control-label text-primary">Customer</label>
+                                <select class="form-control" name="pelanggan_id" required>
+                                    <option value="">--Please Select--</option>
+                                    <?php
                                             foreach ($data_pelanggan as $pelanggan) {
                                         ?>
-                                        <option value="<?php echo $pelanggan->pelanggan_id ?>">
-                                            <?php echo $pelanggan->pelanggan_id.' '.$pelanggan->nama_pelanggan ?>
-                                        </option>
-                                        <?php } ?>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                       Choose a customer identity!
-                                    </div>
+                                    <option value="<?php echo $pelanggan->pelanggan_id ?>">
+                                        <?php echo $pelanggan->pelanggan_id.' '.$pelanggan->nama_pelanggan ?>
+                                    </option>
+                                    <?php } ?>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Choose a customer identity!
                                 </div>
+                            </div>
 
-                                <div class="form-group">
-                                    <label class="control-label text-primary">Employee</label>
-                                    <select class="form-control" name="karyawan_id" required>
-                                        <option value="">--Please Select--</option>
-                                        <?php
+                            <div class="form-group">
+                                <label class="control-label text-primary">Employee</label>
+                                <select class="form-control" name="karyawan_id" required>
+                                    <option value="">--Please Select--</option>
+                                    <?php
                                             foreach ($data_karyawan as $karyawan) {
                                                 if ($karyawan->aktif == 1) {
-                                        ?>
-                                        <option value="<?php echo $karyawan->karyawan_id ?>">
-                                            <?php echo $karyawan->karyawan_id.' '.$karyawan->nama_karyawan ?>
-                                        </option>
-                                        <?php }} ?>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Choose employee identity!
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label text-primary">Weight (kg)</label>
-                                    <input type="number"  class="form-control" placeholder='Laundry Weight' name="berat"  required>
-                                    <div class="invalid-feedback">
-                                        Fillup Laundry Weight!
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label text-primary">Order Date</label>
-                                    <input type="date"  class="form-control" placeholder='Laundry Order Date' name="tgl_order" required>
-                                    <div class="invalid-feedback">
-                                        Fill in the date of the laundry order!
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label text-primary">Finished Date</label>
-                                    <input type="date"  class="form-control" placeholder='Finished Date' name="tgl_selesai">
+                                    ?>
+                                    <option value="<?php echo $karyawan->karyawan_id ?>">
+                                        <?php echo $karyawan->karyawan_id.' '.$karyawan->nama_karyawan ?>
+                                    </option>
+                                    <?php }} ?>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Choose employee identity!
                                 </div>
                             </div>
-                            <div class="modal-footer d-flex">
-                                <button type="button" class="flex-fill btn btn-danger btn-user" data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="flex-fill btn btn-success btn-user">Save</button>
+
+                            <div class="form-group">
+                                <label class="control-label text-primary">Weight (kg)</label>
+                                <input class="form-control" name="berat" placeholder='Laundry Weight' required
+                                       type="number">
+                                <div class="invalid-feedback">
+                                    Fillup Laundry Weight!
+                                </div>
                             </div>
-                        </form>
-                    </div>
+
+                            <div class="form-group">
+                                <label class="control-label text-primary">Order Date</label>
+                                <input class="form-control" name="tgl_order" placeholder='Laundry Order Date'
+                                       required type="date">
+                                <div class="invalid-feedback">
+                                    Fill in the date of the laundry order!
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label text-primary">Finished Date</label>
+                                <input class="form-control" name="tgl_selesai" placeholder='Finished Date' type="date">
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex">
+                            <button class="flex-fill btn btn-danger btn-user" data-dismiss="modal" type="button">
+                                Cancel
+                            </button>
+                            <button class="flex-fill btn btn-success btn-user" type="submit">Save</button>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
 
-            <!-- Modal for editing existing data -->
-            <?php
+        <!-- Modal for editing existing data -->
+        <?php
                 $no = 1;
-                foreach ($data_transaksi as $transaksi) {
+                foreach ($data_Transaction as $Transaction) {
             ?>
-            <div class="modal fade" id="editTransaksi<?php echo $no ?>" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="formEditTransaksi" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title font-weight-bold text-primary mx-3 mt-3" id="formEditTransaksiLabel">Edit Transaction Data</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form name="form_edit_matakuliah" action="<?php echo base_url().'transaksi/edit' ?>" method="post" class="user needs-validation mx-3 mb-4" novalidate>
-                            <div class="modal-body"> 
-                                <div class="form-group d-none">
-                                    <label class="control-label text-primary">ID Transactions</label>
-                                    <input type="text"  class="form-control" name="transaksi_id" value="<?php echo $transaksi->transaksi_id ?>" required readonly>
-                                </div>                                
-                                <div class="form-group">
-                                    <label class="control-label text-primary">Customer</label>
-                                    <select class="form-control" name="pelanggan_id" required>
-                                        <option value="">--Please Select--</option>
-                                        <?php
+        <div aria-hidden="true" aria-labelledby="formEditTransaction" class="modal fade" data-backdrop="static"
+             data-keyboard="false" id="editTransaction<?php echo $no ?>" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold text-primary mx-3 mt-3" id="formEditTransactionLabel">Edit
+                            Transaction Data</h5>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="<?php echo base_url().'Transaction/edit' ?>" class="user needs-validation mx-3 mb-4"
+                          method="post"
+                          name="form_edit_matakuliah" novalidate>
+                        <div class="modal-body">
+                            <div class="form-group d-none">
+                                <label class="control-label text-primary">ID Transactions</label>
+                                <input class="form-control" name="Transaction_id" readonly
+                                       required type="text" value="<?php echo $Transaction->Transaction_id ?>">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label text-primary">Customer</label>
+                                <select class="form-control" name="pelanggan_id" required>
+                                    <option value="">--Please Select--</option>
+                                    <?php
                                             foreach ($data_pelanggan as $pelanggan) {
                                         ?>
-                                        <option value="<?php echo $pelanggan->pelanggan_id ?>" <?php if ($pelanggan->pelanggan_id === $transaksi->pelanggan_id) { echo "selected"; } ?>>
-                                            <?php echo $pelanggan->pelanggan_id.' '.$pelanggan->nama_pelanggan ?>
-                                        </option>
-                                        <?php } ?>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                       Choose a customer identity!
-                                    </div>
+                                    <option value="<?php echo $pelanggan->pelanggan_id ?>"
+                                    <?php if ($pelanggan->pelanggan_id === $Transaction->pelanggan_id) { echo "selected";
+                                    } ?>>
+                                    <?php echo $pelanggan->pelanggan_id.' '.$pelanggan->nama_pelanggan ?>
+                                    </option>
+                                    <?php } ?>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Choose a customer identity!
                                 </div>
+                            </div>
 
-                                <div class="form-group">
-                                    <label class="control-label text-primary">Employee</label>
-                                    <select class="form-control" name="karyawan_id" required>
-                                        <option value="">--Please Select--</option>
-                                        <?php
+                            <div class="form-group">
+                                <label class="control-label text-primary">Employee</label>
+                                <select class="form-control" name="karyawan_id" required>
+                                    <option value="">--Please Select--</option>
+                                    <?php
                                             foreach ($data_karyawan as $karyawan) {
                                                 if ($karyawan->aktif == 1) {
-                                        ?>
-                                        <option value="<?php echo $karyawan->karyawan_id ?>" <?php if ($karyawan->karyawan_id === $transaksi->karyawan_id) { echo "selected"; } ?>>
-                                            <?php echo $karyawan->karyawan_id.' '.$karyawan->nama_karyawan ?>
-                                        </option>
-                                        <?php }} ?>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Choose employee identity!
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label text-primary">Weight (kg)</label>
-                                    <input type="number"  class="form-control" placeholder='Laundry Weight' name="berat" value="<?php echo $transaksi->berat ?>" required>
-                                    <div class="invalid-feedback">
-                                        Fillup Laundry Weight!
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label text-primary">Order Date</label>
-                                    <input type="date"  class="form-control" placeholder='Laundry Order Date' name="tgl_order" value="<?php echo $transaksi->tgl_order ?>" required>
-                                    <div class="invalid-feedback">
-                                        Fill in the date of the laundry order!
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label text-primary">Finished Date</label>
-                                    <input type="date"  class="form-control" placeholder='Finished Date' name="tgl_selesai" value="<?php echo $transaksi->tgl_selesai ?>">
+                                    ?>
+                                    <option value="<?php echo $karyawan->karyawan_id ?>"
+                                    <?php if ($karyawan->karyawan_id === $Transaction->karyawan_id) { echo "selected"; }
+                                    ?>>
+                                    <?php echo $karyawan->karyawan_id.' '.$karyawan->nama_karyawan ?>
+                                    </option>
+                                    <?php }} ?>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Choose employee identity!
                                 </div>
                             </div>
-                            <div class="modal-footer d-flex">
-                                <button type="button" class="flex-fill btn btn-danger btn-user" data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="flex-fill btn btn-success btn-user">Save</button>
+
+                            <div class="form-group">
+                                <label class="control-label text-primary">Weight (kg)</label>
+                                <input class="form-control" name="berat" placeholder='Laundry Weight' required
+                                       type="number" value="<?php echo $Transaction->berat ?>">
+                                <div class="invalid-feedback">
+                                    Fillup Laundry Weight!
+                                </div>
                             </div>
-                        </form>
-                    </div>
+
+                            <div class="form-group">
+                                <label class="control-label text-primary">Order Date</label>
+                                <input class="form-control" name="tgl_order" placeholder='Laundry Order Date'
+                                       required type="date" value="<?php echo $Transaction->tgl_order ?>">
+                                <div class="invalid-feedback">
+                                    Fill in the date of the laundry order!
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label text-primary">Finished Date</label>
+                                <input class="form-control" name="tgl_selesai" placeholder='Finished Date' type="date"
+                                       value="<?php echo $Transaction->tgl_selesai ?>">
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex">
+                            <button class="flex-fill btn btn-danger btn-user" data-dismiss="modal" type="button">
+                                Cancel
+                            </button>
+                            <button class="flex-fill btn btn-success btn-user" type="submit">Save</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <?php
-                $no++;
-                }
-            ?>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- End of Main Content -->
+</body>
+</html>

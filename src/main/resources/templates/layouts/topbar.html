@@ -1,0 +1,52 @@
+<!-- Top bar -->
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+    <!-- Sidebar Toggle (Topbar) -->
+    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+        <i class="fa fa-bars"></i>
+    </button>
+
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav mr-auto">
+
+        <!-- Web Page Logo -->
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/dashboard}">
+                <img class="logo"
+                     th:src="@{/img/logo.png}" alt="Logo">
+            </a>
+        </li>
+
+        <div class="topbar-divider d-none d-sm-block"></div>
+
+        <!-- Web Page Title -->
+        <li class="nav-item mx-1">
+            <a class="nav-link" href="#">
+                <div class="text-lg text-dark font-weight-bold">Laundry Management System</div>
+            </a>
+        </li>
+
+    </ul>
+
+</nav>
+<!-- End of Top bar -->
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold text-primary mx-3 mt-3" id="logoutModalLabel">Are you sure you're going out?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body mx-3 mb-4">Select the "Logout" button below if you are ready to end this session.</div>
+            <div class="modal-footer d-flex m-3">
+                <button class="flex-fill btn btn-secondary p-2 rounded-pill" type="button" data-dismiss="modal">Cancel</button>
+                <a class="flex-fill btn btn-danger p-2 rounded-pill" th:href="@{/logout}">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Logout Modal-->

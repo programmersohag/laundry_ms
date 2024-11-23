@@ -61,4 +61,9 @@ public class CustomerService {
         }
         return code;
     }
+
+    public void doRemove(String customerCode) throws NotFoundException {
+       Customer customer = findByCode(customerCode);
+       customerRepository.delete(customer);
+    }
 }

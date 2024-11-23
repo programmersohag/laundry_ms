@@ -1,14 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{layouts/header}">
 
 </th:block>
-<body>
-<!-- Main Content -->
-<div class="content">
-  <!-- The content from other templates will be injected here -->
-  <div layout:fragment="content"></div>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <div th:replace="~{layouts/sidebar}"></div>
+    <!-- Content Wrapper -->
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            <div th:replace="~{layouts/topbar}"></div>
+            <!-- Main Content -->
+            <!-- The content from other templates will be injected here -->
+            <div layout:fragment="content"></div>
+            <!-- Main Content -->
+        </div>
+    </div>
+    <!-- Content Wrapper -->
 </div>
+<!-- Page Wrapper -->
+
 
 <!-- Footer -->
 <div th:replace="~{layouts/footer}"></div>

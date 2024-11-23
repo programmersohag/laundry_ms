@@ -22,6 +22,11 @@ public class TransactionController {
         return "views/transaction";
     }
 
+    @GetMapping("/report")
+    public String report() {
+        return "views/report/report_transaction";
+    }
+
     @PostMapping
     public String addEmployee(@RequestBody TransactionDto dto) {
         dto = transactionService.doSave(dto);

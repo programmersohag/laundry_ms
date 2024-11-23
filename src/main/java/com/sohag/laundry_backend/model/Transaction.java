@@ -10,9 +10,8 @@ import java.util.Date;
 @Table(name = "transaction")
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    private Integer employeeId;
+    private Long id;
+    private String employeeId;
     private Integer customerId;
     private String weight;
     private Integer total;

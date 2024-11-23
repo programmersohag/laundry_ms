@@ -1,8 +1,11 @@
 package com.sohag.laundry_backend.service;
 
+import com.sohag.laundry_backend.dto.CustomerDto;
 import com.sohag.laundry_backend.dto.ProductionDto;
 import com.sohag.laundry_backend.repository.ProductionRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductionService {
@@ -15,5 +18,9 @@ public class ProductionService {
 
     public ProductionDto doSave(ProductionDto dto) {
         return null;
+    }
+
+    public List<ProductionDto> findAll() {
+        return productionRepository.findAllExpenditure();
     }
 }

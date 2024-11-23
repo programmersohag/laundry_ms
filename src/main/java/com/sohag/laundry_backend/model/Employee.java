@@ -1,5 +1,6 @@
 package com.sohag.laundry_backend.model;
 
+import com.sohag.laundry_backend.enums.EmployeeType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -10,8 +11,7 @@ import java.util.Date;
 @Table(name = "employee")
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private String id;
     private String name;
     private String gender;
     private String address;
@@ -19,5 +19,5 @@ public class Employee {
     private Double monthlySalary;
     private Date joiningDate;
     private Date quitDate;
-    private Boolean isActive;
+    private EmployeeType empType;
 }

@@ -28,6 +28,11 @@ public class CustomerController {
         return "views/customer";
     }
 
+    @GetMapping("/report")
+    public String report() {
+        return "views/report/report_customer";
+    }
+
     @PostMapping
     public String addCustomer(@ModelAttribute CustomerDto dto, RedirectAttributes redirect) {
         try {
@@ -39,11 +44,22 @@ public class CustomerController {
         return "redirect:/customer";
     }
 
-    @PutMapping
+    @PostMapping("/edit")
     public String editCustomer(@ModelAttribute CustomerDto dto, RedirectAttributes redirect) {
         try {
             dto = customerService.doUpdate(dto);
             redirect.addFlashAttribute("message", "Edited Successfully");
+        } catch (NotFoundException e) {
+            redirect.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/customer";
+    }
+
+    @GetMapping("/delete/{customerCode}")
+    public String removeCustomer(@PathVariable String customerCode, RedirectAttributes redirect) {
+        try {
+            customerService.doRemove(customerCode);
+            redirect.addFlashAttribute("message", "Deleted Successfully");
         } catch (NotFoundException e) {
             redirect.addFlashAttribute("error", e.getMessage());
         }
