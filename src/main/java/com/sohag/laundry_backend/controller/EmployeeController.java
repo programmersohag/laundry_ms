@@ -1,13 +1,12 @@
 package com.sohag.laundry_backend.controller;
 
 import com.sohag.laundry_backend.dto.EmployeeDto;
+import com.sohag.laundry_backend.exception.NotFoundException;
 import com.sohag.laundry_backend.service.EmployeeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -35,8 +34,29 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public String addEmployee(@RequestBody EmployeeDto dto) {
+    public String addEmployee(@ModelAttribute EmployeeDto dto) {
         dto = employeeService.doSave(dto);
-        return "redirect:/customer";
+        return "redirect:/employee";
+    }
+
+    @PostMapping("/edit")
+    public String editEmployee(@ModelAttribute EmployeeDto dto, RedirectAttributes redirect) {
+        try {
+            dto = employeeService.doUpdate(dto);
+            redirect.addFlashAttribute("message", "Edited Successfully");
+        } catch (NotFoundException e) {
+            redirect.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/employee";
+    }
+    @GetMapping("/delete/{empCode}")
+    public String removeEmployee(@PathVariable String empCode, RedirectAttributes redirect) {
+        try {
+            employeeService.removeById(empCode);
+            redirect.addFlashAttribute("message", "Deleted Successfully");
+        } catch (NotFoundException e) {
+            redirect.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/employee";
     }
 }

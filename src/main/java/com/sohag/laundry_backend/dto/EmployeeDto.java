@@ -2,6 +2,7 @@ package com.sohag.laundry_backend.dto;
 
 import com.sohag.laundry_backend.enums.EmployeeType;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -13,7 +14,9 @@ public class EmployeeDto {
     private String address;
     private String phoneNo;
     private Double monthlySalary;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date joiningDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date quitDate;
     private EmployeeType employeeType;
 
