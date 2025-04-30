@@ -10,11 +10,15 @@ import java.util.Date;
 @Table(name = "transaction")
 public class Transaction {
     @Id
-    private Long id;
+    private String id;
     private String employeeId;
-    private Integer customerId;
+    private String customerId;
     private String weight;
     private Integer total;
     private Date dateOfOrder;
     private Date dateOfDelivery;
+    @Transient
+    private String employeeName;
+    @Transient
+    private String customerName;
 }

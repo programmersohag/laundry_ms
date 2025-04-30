@@ -1,13 +1,18 @@
 package com.sohag.laundry_backend.controller;
 
 import com.sohag.laundry_backend.dto.CustomerDto;
+import com.sohag.laundry_backend.dto.EmployeeDto;
+import com.sohag.laundry_backend.enums.Gender;
 import com.sohag.laundry_backend.exception.NotFoundException;
 import com.sohag.laundry_backend.service.CustomerService;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -26,11 +31,6 @@ public class CustomerController {
         model.addAttribute("customers", list);
         model.addAttribute("code", customerService.getCode(list));
         return "views/customer";
-    }
-
-    @GetMapping("/report")
-    public String report() {
-        return "views/report/report_customer";
     }
 
     @PostMapping
@@ -64,5 +64,17 @@ public class CustomerController {
             redirect.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/customer";
+    }
+
+    @GetMapping("/report-filter")
+    public String reportFilter() {
+        return "views/report/report_filter_customer";
+    }
+
+    @PostMapping("/report-filter")
+    @ResponseBody
+    public ResponseEntity<List<CustomerDto>> reportData(@RequestParam(required = false) Gender gender) {
+        List<CustomerDto> list = customerService.findAllByGender(gender);
+        return ResponseEntity.ok(list);
     }
 }

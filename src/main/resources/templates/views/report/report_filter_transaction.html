@@ -2,41 +2,90 @@
 <html lang="en" layout:decorate="~{layouts/base}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>Contact Us - My Application</title>
+    <title>Delivery Report By Date Range</title>
 </head>
 <body>
 <div layout:fragment="content">
     <!-- Begin Page Content -->
     <div class="container-fluid">
-
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between">
                 <h4 class="my-auto font-weight-bold text-primary">Transaction Data Report</h4>
             </div>
             <div class="card-body">
-                <form action="<?php echo base_url().'transaksi/laporan_filter' ?>" class="w-50 user needs-validation mx-3 mb-4"
-                      method="post" name="form_filter_karyawan" novalidate>
+                <form class="w-50 user needs-validation mx-3 mb-4"
+                      method="post" name="form_filter_transaction" novalidate>
                     <h5>Transactions are completed within the timeframe</h5>
                     <div class="form-group">
                         <label class="control-label text-primary">From</label>
-                        <input class="form-control" name="dari" required type="date">
+                        <input class="form-control" name="from" required type="date">
                     </div>
                     <div class="form-group">
                         <label class="control-label text-primary">To</label>
-                        <input class="form-control" name="sampai" required type="date">
+                        <input class="form-control" name="to" required type="date">
                     </div>
-                    <button class="flex-fill btn btn-primary btn-user px-4" type="submit">Search</button>
+                    <button class="flex-fill btn btn-primary btn-user px-4" id="report-search" type="button">Search
+                    </button>
                 </form>
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered table-striped" id="transaction-report">
+                        <thead>
+                        <tr class="text-primary">
+                            <th>#</th>
+                            <th>Transaction ID</th>
+                            <th>Customer</th>
+                            <th>Employee</th>
+                            <th>Weight</th>
+                            <th>Total</th>
+                            <th>Order</th>
+                            <th>Finished</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-
     </div>
     <!-- /.container-fluid -->
 </div>
 <!-- End of Main Content -->
+<script layout:fragment="script" type="application/javascript" th:inline="javascript">
+    $("#report-search").on("click", function (e) {
+        const from = $("input[name='from']").val();
+        const to = $("input[name='to']").val();
+        const url = `/transaction/report-filter`;
+        const param = {from, to};
+        callAjax(url, param, 'POST', onSuccess);
+    });
+
+    function onSuccess(resp) {
+        $('#transaction-report').DataTable({
+            destroy: true,
+            data: resp,
+            layout: {
+                topStart: {
+                    buttons: ['pdf', 'print']
+                }
+            },
+            columns: [
+                {
+                    defaultContent: 'N/A', render: function (_data, _type, _row, meta) {
+                        return meta.row + 1
+                    }
+                },
+                {data: 'id', defaultContent: 'N/A'},
+                {data: 'customerName', defaultContent: 'N/A'},
+                {data: 'employeeName', defaultContent: 'N/A'},
+                {data: 'weight', defaultContent: 'N/A'},
+                {data: 'total', defaultContent: 'N/A'},
+                {data: 'dateOfOrder', defaultContent: 'N/A'},
+                {data: 'dateOfDelivery', defaultContent: 'N/A'},
+            ]
+        })
+    }
+</script>
 </body>
 </html>
-            
-
-            

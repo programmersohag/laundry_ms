@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Print</title>
+    <style>
+        body {
+            width: 80%;
+            margin: auto;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+        }
+
+        .line {
+            border-bottom: 1px solid black;
+        }
+
+        table td {
+            font-weight: bold;
+            text-align: left;
+        }
+
+        span {
+            margin-left: 20px;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+<h4>LAUNDRY</h4>
+<h1 class="line">Payment Note</h1>
+<table>
+    <tr>
+        <td>Transaction No.</td>
+        <td class="right" th:text="${trans.id}"></td>
+    </tr>
+    <tr>
+        <td>Employee</td>
+        <td class="right" th:text="${trans.employeeName}"></td>
+    </tr>
+    <tr class="line">
+        <td>Order Date</td>
+        <td class="right" th:text="${trans.dateOfOrder}"></td>
+    </tr>
+    <tr>
+        <td>Customer</td>
+        <td class="right" th:text="${trans.customerName}"></td>
+    </tr>
+    <tr>
+        <td>Laundry Weight</td>
+        <td class="right" th:text="${trans.weight + 'KG'}"></td>
+    </tr>
+    <tr class="line">
+        <td>Cost</td>
+        <td class="right">৳ 50 Per KG</td>
+    </tr>
+    <tr>
+        <td><b>Total</b></td>
+        <td class="right"><b th:text="${'৳ '+trans.total}"></b></td>
+    </tr>
+</table>
+<p>Thank you for using our services. Looking forward to your next visit.</p>
+<script type="text/javascript">
+    window.onload = function () {
+        window.print();
+    }
+    window.onafterprint = function () {
+        window.close();
+    }
+</script>
+</body>
+</html>

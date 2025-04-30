@@ -15,19 +15,37 @@
                 <h4 class="my-auto font-weight-bold text-primary">Expenditure Data Report</h4>
             </div>
             <div class="card-body">
-                <form action="<?php echo base_url().'pengeluaran/laporan_filter' ?>" class="w-50 user needs-validation mx-3 mb-4"
-                      method="post" name="form_filter_karyawan" novalidate>
+                <form class="w-50 user needs-validation mx-3 mb-4"
+                      method="post" name="form_filter_expense" novalidate>
                     <h5>Expenditure on time range</h5>
                     <div class="form-group">
                         <label class="control-label text-primary">From</label>
-                        <input class="form-control" name="dari" required type="date">
+                        <input class="form-control" name="from" required type="date">
                     </div>
                     <div class="form-group">
                         <label class="control-label text-primary">To</label>
-                        <input class="form-control" name="sampai" required type="date">
+                        <input class="form-control" name="to" required type="date">
                     </div>
-                    <button class="flex-fill btn btn-primary btn-user px-4" type="submit">Search</button>
+                    <button class="flex-fill btn btn-primary btn-user px-4" id="report-search" type="button">Search
+                    </button>
                 </form>
+
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered table-striped" id="expenditure-report">
+                        <thead>
+                        <tr class="text-primary">
+                            <th>#</th>
+                            <th>Exp. ID</th>
+                            <th>Detail</th>
+                            <th>Total</th>
+                            <th>Date</th>
+                            <th>Employee PJ</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -35,6 +53,39 @@
     <!-- /.container-fluid -->
 </div>
 <!-- End of Main Content -->
+<script layout:fragment="script" type="application/javascript" th:inline="javascript">
+    $("#report-search").on("click", function (e) {
+        const from = $("input[name='from']").val();
+        const to = $("input[name='to']").val();
+        const url = `/expenditure/report-filter`;
+        const param = {from, to};
+        callAjax(url, param, 'POST', onSuccess);
+    });
+
+    function onSuccess(resp) {
+        $('#expenditure-report').DataTable({
+            destroy: true,
+            data: resp,
+            layout: {
+                topStart: {
+                    buttons: ['pdf', 'print']
+                }
+            },
+            columns: [
+                {
+                    defaultContent: 'N/A', render: function (_data, _type, _row, meta) {
+                        return meta.row + 1
+                    }
+                },
+                {data: 'id', defaultContent: 'N/A'},
+                {data: 'details', defaultContent: 'N/A'},
+                {data: 'total', defaultContent: 'N/A'},
+                {data: 'dateOfIssue', defaultContent: 'N/A'},
+                {data: 'employeePj', defaultContent: 'N/A'},
+            ]
+        })
+    }
+</script>
 </body>
 </html>
             

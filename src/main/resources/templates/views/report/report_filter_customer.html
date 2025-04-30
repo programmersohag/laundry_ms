@@ -2,31 +2,48 @@
 <html lang="en" layout:decorate="~{layouts/base}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>Contact Us - My Application</title>
+    <title>Customer Report - By Gender</title>
 </head>
 <body>
 <div layout:fragment="content">
     <!-- Begin Page Content -->
     <div class="container-fluid">
-
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between">
                 <h4 class="my-auto font-weight-bold text-primary">Customer Data Report</h4>
             </div>
             <div class="card-body">
-                <form action="<?php echo base_url().'pelanggan/laporan_filter' ?>" class="w-50 user needs-validation mx-3 mb-4"
-                      method="post" name="form_filter_karyawan" novalidate>
+                <form
+                        class="w-50 user needs-validation mx-3 mb-4"
+                        method="post" name="form_filter_customer" novalidate>
                     <div class="form-group">
                         <label class="control-label text-primary">Gender</label>
-                        <select class="form-control" name="jeniskelamin" pattern="[A-Za-z]{1,10}">
-                            <!-- <option value="All" selected>All</option> -->
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
+                        <select class="form-control" name="gender">
+                            <option value="ALL">All</option>
+                            <option value="MALE">Male</option>
+                            <option value="FEMALE">Female</option>
                         </select>
                     </div>
-                    <button class="flex-fill btn btn-primary btn-user px-4" type="submit">Search</button>
+                    <button class="flex-fill btn btn-primary btn-user px-4" id="report-search" type="button">Search
+                    </button>
                 </form>
+
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered table-striped" id="customer-report">
+                        <thead>
+                        <tr class="text-primary">
+                            <th>No.</th>
+                            <th>ID</th>
+                            <th>Customer's name</th>
+                            <th>Address</th>
+                            <th>Contact</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -34,6 +51,40 @@
     <!-- /.container-fluid -->
 </div>
 <!-- End of Main Content -->
+<script layout:fragment="script" type="application/javascript" th:inline="javascript">
+    $("#report-search").on("click", function (e) {
+        const gender = $("select[name='gender']").val();
+        let param = {gender};
+        if (gender === 'ALL') {
+            param = {};
+        }
+        const url = `/customer/report-filter`;
+        callAjax(url, param, 'POST', onSuccess);
+    });
+
+    function onSuccess(resp) {
+        $('#customer-report').DataTable({
+            destroy: true,
+            data: resp,
+            layout: {
+                topStart: {
+                    buttons: ['pdf', 'print']
+                }
+            },
+            columns: [
+                {
+                    defaultContent: 'N/A', render: function (_data, _type, _row, meta) {
+                        return meta.row + 1
+                    }
+                },
+                {data: 'customerCode', defaultContent: 'N/A'},
+                {data: 'name', defaultContent: 'N/A'},
+                {data: 'address', defaultContent: 'N/A'},
+                {data: 'phoneNo', defaultContent: 'N/A'},
+            ]
+        })
+    }
+</script>
 </body>
 </html>
             

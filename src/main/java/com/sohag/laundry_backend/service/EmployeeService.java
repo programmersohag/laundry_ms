@@ -1,12 +1,13 @@
 package com.sohag.laundry_backend.service;
 
 import com.sohag.laundry_backend.dto.EmployeeDto;
-import com.sohag.laundry_backend.enums.EmployeeType;
+import com.sohag.laundry_backend.enums.Status;
 import com.sohag.laundry_backend.exception.NotFoundException;
 import com.sohag.laundry_backend.model.Employee;
 import com.sohag.laundry_backend.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,7 +29,7 @@ public class EmployeeService {
         employee.setPhoneNo(dto.getPhoneNo());
         employee.setJoiningDate(dto.getJoiningDate());
         employee.setQuitDate(dto.getQuitDate());
-        employee.setEmpType(EmployeeType.ACTIVE);
+        employee.setEmployeeStatus(Status.ACTIVE);
         employeeRepository.save(employee);
         return dto;
     }
@@ -53,7 +54,7 @@ public class EmployeeService {
     }
     public void removeById(String id) throws NotFoundException {
         Employee employee = findById(id);
-        employee.setEmpType(EmployeeType.INACTIVE);
+        employee.setEmployeeStatus(Status.INACTIVE);
         employeeRepository.save(employee);
     }
 
@@ -67,5 +68,9 @@ public class EmployeeService {
             code = "K00" + (last_id + 2);
         }
         return code;
+    }
+
+    public List<EmployeeDto> findAllByDateRange(Date from, Date to) {
+        return employeeRepository.findAllByDateBetween(from, to);
     }
 }

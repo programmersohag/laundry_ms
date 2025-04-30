@@ -2,12 +2,16 @@ package com.sohag.laundry_backend.controller;
 
 import com.sohag.laundry_backend.dto.EmployeeDto;
 import com.sohag.laundry_backend.exception.NotFoundException;
+import com.sohag.laundry_backend.model.Transaction;
 import com.sohag.laundry_backend.service.EmployeeService;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -28,11 +32,6 @@ public class EmployeeController {
         return "views/employee";
     }
 
-    @GetMapping("/report")
-    public String report() {
-        return "views/report/report_employee";
-    }
-
     @PostMapping
     public String addEmployee(@ModelAttribute EmployeeDto dto) {
         dto = employeeService.doSave(dto);
@@ -49,6 +48,7 @@ public class EmployeeController {
         }
         return "redirect:/employee";
     }
+
     @GetMapping("/delete/{empCode}")
     public String removeEmployee(@PathVariable String empCode, RedirectAttributes redirect) {
         try {
@@ -58,5 +58,17 @@ public class EmployeeController {
             redirect.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/employee";
+    }
+
+    @GetMapping("/report-filter")
+    public String reportFilter() {
+        return "views/report/report_filter_employee";
+    }
+
+    @PostMapping("/report-filter")
+    @ResponseBody
+    public ResponseEntity<List<EmployeeDto>> reportData(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, @DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam Date to) {
+        List<EmployeeDto> list = employeeService.findAllByDateRange(from, to);
+        return ResponseEntity.ok(list);
     }
 }

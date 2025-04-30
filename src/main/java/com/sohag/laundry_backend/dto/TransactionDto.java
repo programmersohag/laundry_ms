@@ -6,8 +6,9 @@ import java.util.Date;
 
 @Data
 public class TransactionDto {
-    private Integer employeeId;
-    private Integer customerId;
+    private String trxId;
+    private String employeeId;
+    private String customerId;
     private String weight;
     private Integer total;
     private Date dateOfOrder;

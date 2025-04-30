@@ -1,6 +1,7 @@
 package com.sohag.laundry_backend.service;
 
 import com.sohag.laundry_backend.dto.CustomerDto;
+import com.sohag.laundry_backend.enums.Gender;
 import com.sohag.laundry_backend.exception.NotFoundException;
 import com.sohag.laundry_backend.model.Customer;
 import com.sohag.laundry_backend.repository.CustomerRepository;
@@ -50,8 +51,12 @@ public class CustomerService {
         return customerRepository.findAllCustomer();
     }
 
+    public List<CustomerDto> findAllByGender(Gender gender) {
+        return customerRepository.findAllByGender(gender);
+    }
+
     public String getCode(List<CustomerDto> customers) {
-        String code = "";
+        String code;
         int len = customers.size();
         if (len == 0) {
             code = "P000";
@@ -63,7 +68,7 @@ public class CustomerService {
     }
 
     public void doRemove(String customerCode) throws NotFoundException {
-       Customer customer = findByCode(customerCode);
-       customerRepository.delete(customer);
+        Customer customer = findByCode(customerCode);
+        customerRepository.delete(customer);
     }
 }

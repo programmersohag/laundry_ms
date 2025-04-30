@@ -1,6 +1,6 @@
 package com.sohag.laundry_backend.model;
 
-import com.sohag.laundry_backend.enums.EmployeeType;
+import com.sohag.laundry_backend.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,5 +19,5 @@ public class Employee {
     private Double monthlySalary;
     private Date joiningDate;
     private Date quitDate;
-    private EmployeeType empType;
+    private Status employeeStatus;
 }

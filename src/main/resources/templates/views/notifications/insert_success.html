@@ -1,17 +1,31 @@
-<body class="bg-gradient-success">
-
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>Success - LMS</title>
+</head>
+<body>
+<div layout:fragment="content" class="bg-gradient-success">
     <div class="container py-5 mt-5">
-    	<div class="alert-container">
-	    	<div class="alert alert-light -dark alert-dismissible fade show w-75 m-auto" role="alert">
-				<h3 class="alert-heading my-2 text-success font-weight-bold ">Operation Succeeded!</h3>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick=location.href="<?php echo base_url().$datatype ?>">
-				<span aria-hidden="true">&times;</span>
-				</button>
-				<hr>
-				<p class="lead">Data successfully saved to database.</p>
-				<img class="illustration" src="<?php echo base_url().'assets/img/undraw_Checklist.svg' ?>">
-			</div>
-		</div>
-	</div>
+        <div class="alert-container">
+            <div class="alert alert-light -dark alert-dismissible fade show w-75 m-auto" role="alert">
+                <h3 class="alert-heading my-2 text-success font-weight-bold">Operation Succeeded!</h3>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" th:attr="data-path=${path}">
+                    <span aria-hidden="true">&times;</span></button>
+                <hr>
+                <p class="lead">Data successfully saved to database.</p>
+                <img class="illustration" th:src="@{/img/undraw_Checklist.svg}" alt="image">
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End of Main Content -->
+<script layout:fragment="script" type="application/javascript" th:inline="javascript">
+    $(".close").on("click", function (e) {
+        const path = $(this).data('path');
+        console.log(window.location)
+        window.location.href = window.location.origin + '/' + path;
+    });
+</script>
+</body>
+</html>
