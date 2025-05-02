@@ -1,15 +1,12 @@
 package com.sohag.laundry_backend.controller;
 
 import com.sohag.laundry_backend.dto.EmployeeDto;
-import com.sohag.laundry_backend.exception.NotFoundException;
-import com.sohag.laundry_backend.model.Transaction;
 import com.sohag.laundry_backend.service.EmployeeService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Date;
 import java.util.List;
@@ -33,31 +30,36 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public String addEmployee(@ModelAttribute EmployeeDto dto) {
-        dto = employeeService.doSave(dto);
-        return "redirect:/employee";
+    public String addEmployee(Model model, @ModelAttribute EmployeeDto dto) {
+        try {
+            employeeService.doSave(dto);
+            model.addAttribute("path", "employee");
+            return "views/notifications/insert_success";
+        } catch (Exception e) {
+            return "views/notifications/insert_failed";
+        }
     }
 
     @PostMapping("/edit")
-    public String editEmployee(@ModelAttribute EmployeeDto dto, RedirectAttributes redirect) {
+    public String editEmployee(Model model, @ModelAttribute EmployeeDto dto) {
         try {
-            dto = employeeService.doUpdate(dto);
-            redirect.addFlashAttribute("message", "Edited Successfully");
-        } catch (NotFoundException e) {
-            redirect.addFlashAttribute("error", e.getMessage());
+            employeeService.doUpdate(dto);
+            model.addAttribute("path", "employee");
+            return "views/notifications/insert_success";
+        } catch (Exception e) {
+            return "views/notifications/insert_failed";
         }
-        return "redirect:/employee";
     }
 
     @GetMapping("/delete/{empCode}")
-    public String removeEmployee(@PathVariable String empCode, RedirectAttributes redirect) {
+    public String removeEmployee(Model model, @PathVariable String empCode) {
         try {
             employeeService.removeById(empCode);
-            redirect.addFlashAttribute("message", "Deleted Successfully");
-        } catch (NotFoundException e) {
-            redirect.addFlashAttribute("error", e.getMessage());
+            model.addAttribute("path", "employee");
+            return "views/notifications/delete_success";
+        } catch (Exception e) {
+            return "views/notifications/delete_failed";
         }
-        return "redirect:/employee";
     }
 
     @GetMapping("/report-filter")

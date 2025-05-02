@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pay Salary - My Application</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between">
+                <h4 class="my-auto font-weight-bold text-primary">Pay Salary</h4>
+            </div>
+            <div class="card-body">
+                <form class="user needs-validation mx-3 mb-4" method="post" name="form_pay_salary"
+                      novalidate th:action="@{/expenditure/pay/salary}">
+                    <div class="form-group">
+                        <label class="control-label text-primary">Employee</label>
+                        <select class="form-control" name="employeeId" required>
+                            <option value="">--Please Select--</option>
+                            <option th:each="emp : ${employees}" th:value="${emp.id}" th:text="${emp.name}"></option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Choose employee identity!
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label text-primary" for="total">Total Salary</label>
+                        <input class="form-control" id="total" name="total" placeholder='Total Salary' required
+                               type="number">
+                        <div class="invalid-feedback">
+                            Fill in the total expenses!
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label text-primary" for="details">Detail</label>
+                        <input class="form-control" id="details" name="details"
+                               placeholder='Expenditure Details'
+                               required type="text">
+                        <div class="invalid-feedback">
+                            Fill in the expense details!
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex">
+                        <button class="flex-fill btn btn-danger btn-user" data-dismiss="modal" type="button">
+                            Cancel
+                        </button>
+                        <button class="flex-fill btn btn-success btn-user" type="submit">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- End of Main Content -->
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.sohag.laundry_backend.dto;
 
+import com.sohag.laundry_backend.enums.Gender;
 import com.sohag.laundry_backend.enums.Status;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,7 +11,7 @@ import java.util.Date;
 public class EmployeeDto {
     private String id;
     private String name;
-    private String gender;
+    private Gender gender;
     private String address;
     private String phoneNo;
     private Double monthlySalary;
@@ -20,7 +21,7 @@ public class EmployeeDto {
     private Date quitDate;
     private Status employeeType;
 
-    public EmployeeDto(String id, String name, String gender, String address, String phoneNo, Double monthlySalary, Date joiningDate, Date quitDate) {
+    public EmployeeDto(String id, String name, Gender gender, String address, String phoneNo, Double monthlySalary, Date joiningDate, Date quitDate) {
         this.id = id;
         this.name = name;
         this.gender = gender;

@@ -18,8 +18,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table cellspacing="0" class="table table-bordered table-hover table-striped" id="dataTable"
-                           width="100%">
+                    <table class="table table-bordered table-hover table-striped" id="dataTable">
                         <thead>
                         <tr class="text-primary">
                             <th>#</th>
@@ -66,13 +65,14 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold text-primary mx-3 mt-3" id="formAddCustomerLabel">Customer Data Input</h5>
+                    <h5 class="modal-title font-weight-bold text-primary mx-3 mt-3" id="formAddCustomerLabel">Customer
+                        Data Input</h5>
                     <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <form class="user needs-validation mx-3 mb-4" method="post" name="form_add_customer"
-                      novalidate th:action="@{/customer}">
+                      novalidate th:action="@{/customer/add}">
                     <div class="modal-body">
                         <div class="form-group">
                             <label class="control-label text-primary" for="customer-id">ID</label>
@@ -94,8 +94,9 @@
                             <label class="control-label text-primary" for="gender">Gender</label>
                             <select class="form-control" id="gender" name="gender" required>
                                 <option value="">--Please Select--</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
+                                <option value="MALE">Male</option>
+                                <option value="FEMALE">Female</option>
+                                <option value="OTHERS">Others</option>
                             </select>
                             <div class="invalid-feedback">
                                 Choose the gender of the customer!
@@ -173,8 +174,18 @@
                                 <label class="control-label text-primary" for="sex">Gender</label>
                                 <select class="form-control" id="sex" name="gender" required>
                                     <option value="">--Please Select--</option>
-                                    <option th:selected="${customer.gender == 'Male'}" value="Male">Male</option>
-                                    <option th:selected="${customer.gender == 'Female'}" value="Female">Female</option>
+                                    <option value="MALE"
+                                            th:selected="${customer.gender == T(com.sohag.laundry_backend.enums.Gender).MALE}">
+                                        Male
+                                    </option>
+                                    <option value="FEMALE"
+                                            th:selected="${customer.gender == T(com.sohag.laundry_backend.enums.Gender).FEMALE}">
+                                        Female
+                                    </option>
+                                    <option value="OTHERS"
+                                            th:selected="${customer.gender == T(com.sohag.laundry_backend.enums.Gender).OTHERS}">
+                                        Others
+                                    </option>
                                 </select>
                                 <div class="invalid-feedback">
                                     Choose the gender of the customer!

@@ -1,18 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>Save Fail - LMS</title>
+</head>
 <body class="bg-gradient-danger">
 
-    <div class="container py-5 mt-5">
-    	<div class="alert-container">
-			<div class="alert alert-light text-dark alert-dismissible fade show w-75 m-auto" role="alert" >
-				<h3 class="alert-heading my-2 text-danger font-weight-bold">Operation Failed!</h3>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick=location.href="<?php echo base_url().$datatype ?>">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<p class="lead">Data failed to save to database.</p>
-				<hr>
-				<p class="mb-0">The data you entered is already in the database, or try to check your database connection again.</p>
-				<img class="illustration" src="<?php echo base_url().'assets/img/undraw_Notify.svg' ?>">
-			</div>	
-		</div>
-	</div>
+<div class="container py-5 mt-5">
+    <div class="alert-container">
+        <div class="alert alert-light text-dark alert-dismissible fade show w-75 m-auto" role="alert">
+            <h3 class="alert-heading my-2 text-danger font-weight-bold">Operation Failed!</h3>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" th:attr="data-path=${path}">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <p class="lead">Data failed to save to database.</p>
+            <hr>
+            <p class="mb-0">The data you entered is already in the database, or try to check your database connection
+                again.</p>
+            <img class="illustration" th:src="@{/img/undraw_Notify.svg}" alt="image">
+        </div>
+    </div>
 </div>
 <!-- End of Main Content -->
+<script layout:fragment="script" type="application/javascript" th:inline="javascript">
+    $(".close").on("click", function (e) {
+        const path = $(this).data('path');
+        console.log(window.location)
+        window.location.href = window.location.origin + '/' + path;
+    });
+</script>
+</body>
+</html>

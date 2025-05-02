@@ -23,7 +23,7 @@ public class CustomerService {
         Customer customer = new Customer();
         customer.setName(dto.getName());
         customer.setAddress(dto.getAddress());
-        customer.setCustomerCode(dto.getCustomerCode());
+        customer.setId(dto.getCustomerCode());
         customer.setGender(dto.getGender());
         customer.setPhoneNo(dto.getPhoneNo());
         customerRepository.save(customer);
@@ -39,12 +39,12 @@ public class CustomerService {
         return dto;
     }
 
-    public Customer findById(Integer id) throws NotFoundException {
+    public Customer findById(String id) throws NotFoundException {
         return customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer not found"));
     }
 
     public Customer findByCode(String code) throws NotFoundException {
-        return customerRepository.findByCustomerCode(code).orElseThrow(() -> new NotFoundException("Customer not found"));
+        return customerRepository.findById(code).orElseThrow(() -> new NotFoundException("Customer not found"));
     }
 
     public List<CustomerDto> findAll() {
@@ -70,5 +70,9 @@ public class CustomerService {
     public void doRemove(String customerCode) throws NotFoundException {
         Customer customer = findByCode(customerCode);
         customerRepository.delete(customer);
+    }
+
+    public long countAll() {
+        return customerRepository.count();
     }
 }

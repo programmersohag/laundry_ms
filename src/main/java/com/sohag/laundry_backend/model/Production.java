@@ -11,8 +11,11 @@ import java.util.Date;
 public class Production {
     @Id
     private Long id;
-    private String employeeId;
     private String details;
     private Integer total;
     private Date dateOfIssue;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 }

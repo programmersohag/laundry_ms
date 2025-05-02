@@ -45,6 +45,7 @@ public class EmployeeService {
         employeeRepository.save(employee);
         return dto;
     }
+
     public List<EmployeeDto> findAll() {
         return employeeRepository.findAllEmployees();
     }
@@ -52,6 +53,7 @@ public class EmployeeService {
     public Employee findById(String id) throws NotFoundException {
         return employeeRepository.findById(id).orElseThrow(() -> new NotFoundException("Employee not found"));
     }
+
     public void removeById(String id) throws NotFoundException {
         Employee employee = findById(id);
         employee.setEmployeeStatus(Status.INACTIVE);
@@ -72,5 +74,13 @@ public class EmployeeService {
 
     public List<EmployeeDto> findAllByDateRange(Date from, Date to) {
         return employeeRepository.findAllByDateBetween(from, to);
+    }
+
+    public long countAllActive() {
+        return employeeRepository.countByEmployeeStatus(Status.ACTIVE);
+    }
+
+    public long countAll() {
+        return employeeRepository.count();
     }
 }

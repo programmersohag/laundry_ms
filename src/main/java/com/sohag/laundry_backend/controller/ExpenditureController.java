@@ -1,9 +1,6 @@
 package com.sohag.laundry_backend.controller;
 
-import com.sohag.laundry_backend.dto.CustomerDto;
 import com.sohag.laundry_backend.dto.ProductionDto;
-import com.sohag.laundry_backend.model.Production;
-import com.sohag.laundry_backend.model.Transaction;
 import com.sohag.laundry_backend.service.EmployeeService;
 import com.sohag.laundry_backend.service.ProductionService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -34,15 +31,58 @@ public class ExpenditureController {
         return "views/expenditure";
     }
 
-    @GetMapping("/salary")
-    public String salary() {
-        return "views/report/report_expenditure";
+    @GetMapping("/pay/salary")
+    public String salary(Model model) {
+        model.addAttribute("employees", employeeService.findAll());
+        return "views/pay-salary";
     }
 
-    @PostMapping
-    public String addProduction(@RequestBody ProductionDto dto) {
-        dto = productionService.doSave(dto);
-        return "redirect:/customer";
+    @PostMapping("/pay/salary")
+    public String paySalary(Model model, @ModelAttribute ProductionDto dto) {
+        try {
+            productionService.paySalary(dto);
+            model.addAttribute("path", "expenditure");
+            model.addAttribute("employees", employeeService.findAll());
+            return "views/notifications/insert_success";
+        } catch (Exception e) {
+            model.addAttribute("path", "expenditure");
+            return "views/notifications/insert_failed";
+        }
+    }
+
+    @PostMapping("/add")
+    public String addProduction(Model model, @ModelAttribute ProductionDto dto) {
+        try {
+            productionService.doSave(dto);
+            model.addAttribute("path", "expenditure");
+            return "views/notifications/insert_success";
+        } catch (Exception e) {
+            model.addAttribute("path", "expenditure");
+            return "views/notifications/insert_failed";
+        }
+    }
+
+    @PostMapping("/edit")
+    public String modifyProduction(Model model, @ModelAttribute ProductionDto dto) {
+        try {
+            productionService.doUpdate(dto);
+            model.addAttribute("path", "expenditure");
+            return "views/notifications/insert_success";
+        } catch (Exception e) {
+            model.addAttribute("path", "expenditure");
+            return "views/notifications/insert_failed";
+        }
+    }
+
+    @GetMapping("/delete/{expId}")
+    public String remove(Model model, @PathVariable Long expId) {
+        try {
+            productionService.removeById(expId);
+            model.addAttribute("path", "expenditure");
+            return "views/notifications/delete_success";
+        } catch (Exception e) {
+            return "views/notifications/delete_failed";
+        }
     }
 
     @GetMapping("/report-filter")

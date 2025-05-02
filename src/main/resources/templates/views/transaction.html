@@ -34,7 +34,7 @@
                         <tbody>
                         <tr th:each="transaction, item : ${transactions}">
                             <th th:text="${item.index+1}"></th>
-                            <td th:text="${transaction.id}"></td>
+                            <td th:text="${transaction.trxId}"></td>
                             <td>
                                 <span class="row px-3 text-primary text-xs" th:text="${transaction.employeeId}"></span>
                                 <span class="row px-3" th:text="${transaction.employeeName}"></span>
@@ -47,23 +47,23 @@
                             <td th:if="${transaction.total == 0}">
                                 <span class="badge badge-danger">Not Finished Yet</span>
                             </td>
-                            <td th:if="${transaction.total != 0}" th:text="${transaction.total}">
+                            <td th:if="${transaction.total != 0}" th:text="${transaction.total+'৳'}">
                             </td>
-                            <td th:text="${transaction.dateOfOrder}"></td>
-                            <td th:text="${transaction.dateOfDelivery}"></td>
+                            <td th:text="${#dates.format(transaction.dateOfOrder, 'dd-MM-yyyy')}"></td>
+                            <td th:text="${#dates.format(transaction.dateOfDelivery, 'dd-MM-yyyy')}"></td>
                             <td class="action-icons">
                                 <a class="btn btn-sm rounded-lg btn-primary mb-2"
-                                   th:href="@{/transaction/print-note/{id}(id=${transaction.id})}"
+                                   th:href="@{/transaction/print-note/{id}(id=${transaction.trxId})}"
                                    target="blank"> Note</a><br>
 
                                 <a class="btn btn-sm rounded-lg btn-success mb-2"
-                                   th:href="@{/transaction/deliver/{id}(id=${transaction.id})}">Complete</a>
+                                   th:href="@{/transaction/deliver/{id}(id=${transaction.trxId})}">Complete</a>
                                 <br>
-                                <a th:attr="data-target=${'#editTransaction'+transaction.id}" data-toggle="modal"
+                                <a th:attr="data-target=${'#editTransaction'+transaction.trxId}" data-toggle="modal"
                                    href="#">
                                     <i class="fas fa-edit text-lg text-info" title="Edit"></i>
                                 </a>
-                                <a th:href="@{/transaction/delete/{id}(id=${transaction.id})}">
+                                <a th:href="@{/transaction/delete/{id}(id=${transaction.trxId})}">
                                     <i class="fas fa-trash text-lg text-danger" title="Remove"></i>
                                 </a>
                             </td>
@@ -88,15 +88,15 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form th:action="@{ransaction/add}" class="user needs-validation mx-3 mb-4"
+                    <form th:action="@{transaction/add}" class="user needs-validation mx-3 mb-4"
                           method="post"
-                          name="form_add_Transaction" novalidate>
+                          name="form_add_transaction" novalidate>
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="control-label text-primary" for="customerId">Customer</label>
                                 <select class="form-control" id="customerId" name="customerId" required>
                                     <option value="">--Please Select--</option>
-                                    <option th:each="customer : ${customers}" th:value="${customer.id}"
+                                    <option th:each="customer : ${customers}" th:value="${customer.customerCode}"
                                             th:text="${customer.name}"></option>
                                 </select>
                                 <div class="invalid-feedback">
@@ -118,7 +118,7 @@
 
                             <div class="form-group">
                                 <label class="control-label text-primary">Weight (kg)</label>
-                                <input class="form-control" name="berat" placeholder='Laundry Weight' required
+                                <input class="form-control" name="weight" placeholder='Laundry Weight' required
                                        type="number">
                                 <div class="invalid-feedback">
                                     Fill-up Laundry Weight!
@@ -127,7 +127,7 @@
 
                             <div class="form-group">
                                 <label class="control-label text-primary" for="ttl_order">Order Date</label>
-                                <input class="form-control" id="ttl_order" name="totalOrder"
+                                <input class="form-control" id="ttl_order" name="dateOfOrder"
                                        placeholder='Laundry Order Date'
                                        required type="date">
                                 <div class="invalid-feedback">
@@ -137,7 +137,7 @@
 
                             <div class="form-group">
                                 <label class="control-label text-primary" for="totalFinished">Finished Date</label>
-                                <input class="form-control" id="totalFinished" name="totalFinished"
+                                <input class="form-control" id="totalFinished" name="dateOfDelivery"
                                        placeholder='Finished Date' type="date">
                             </div>
                         </div>
@@ -153,12 +153,8 @@
         </div>
 
         <!-- Modal for editing existing data -->
-        <?php
-                $no = 1;
-                foreach ($data_Transaction as $Transaction) {
-            ?>
         <div aria-hidden="true" aria-labelledby="formEditTransaction" class="modal fade" data-backdrop="static"
-             data-keyboard="false" id="editTransaction<?php echo $no ?>" tabindex="-1">
+             data-keyboard="false" id="editTransaction" tabindex="-1">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -182,7 +178,7 @@
                                 <label class="control-label text-primary">Customer</label>
                                 <select class="form-control" name="customerId" required>
                                     <option value="">--Please Select--</option>
-                                    <option th:each="customer : ${customers}" th:value="${customer.id}"
+                                    <option th:each="customer : ${customers}" th:value="${customer.customerCode}"
                                             th:text="${customer.name}"></option>
                                 </select>
                                 <div class="invalid-feedback">

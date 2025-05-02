@@ -70,7 +70,7 @@
                                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Transaction</div>
                                         <div class="row no-gutters align-items-center">
                                           <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${totalTransaction}"></div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${totalIncomeCount}"></div>
                                           </div>
                                         </div>
                                       </div>
@@ -92,7 +92,7 @@
                                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Transaction</div>
                                         <div class="row no-gutters align-items-center">
                                           <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${activeTransaction}"></div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${totalPendingIncomeCount}"></div>
                                           </div>
                                         </div>
                                       </div>
@@ -114,7 +114,7 @@
                                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Income (This year)</div>
                                         <div class="row no-gutters align-items-center">
                                           <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${totalIncome}"></div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${totalIncomeThisYear}"></div>
                                           </div>
                                         </div>
                                       </div>
@@ -136,7 +136,7 @@
                                         <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Expenditure (This year)</div>
                                         <div class="row no-gutters align-items-center">
                                           <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${totalExpenses}"></div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${totalExpenseThisYear}"></div>
                                           </div>
                                         </div>
                                       </div>
@@ -157,7 +157,6 @@
                                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Profit (This year)</div>
                                         <div class="row no-gutters align-items-center">
                                           <div class="col-auto">
-                                              <!--$ <?php echo $total_keuntungan ?> <?php if($exp1 > $exp2){ echo '<small>(Loss)</small>';}?>-->
                                             <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${totalProfit}"></div>
                                           </div>
                                         </div>

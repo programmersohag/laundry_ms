@@ -11,14 +11,18 @@ import java.util.Date;
 public class Transaction {
     @Id
     private String id;
-    private String employeeId;
-    private String customerId;
-    private String weight;
+    private Integer weight;
     private Integer total;
     private Date dateOfOrder;
     private Date dateOfDelivery;
-    @Transient
-    private String employeeName;
-    @Transient
-    private String customerName;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+
 }

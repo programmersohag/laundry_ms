@@ -12,9 +12,12 @@ import java.util.List;
 @Repository
 public interface ProductionRepository extends CrudRepository<Production, Long> {
 
-    @Query("select new com.sohag.laundry_backend.dto.ProductionDto(p.id, p.employeeId, p.details, p.total, p.dateOfIssue) from Production p order by p.employeeId")
+    @Query("select new com.sohag.laundry_backend.dto.ProductionDto(p.id, p.employee.id, p.employee.name, p.details, p.total, p.dateOfIssue) from Production p left join p.employee order by p.employee.id")
     List<ProductionDto> findAllExpenditure();
 
-    @Query("select new com.sohag.laundry_backend.dto.ProductionDto(p.id, p.employeeId, p.details, p.total, p.dateOfIssue) from Production p where cast(p.dateOfIssue as date) between ?1 and ?2" )
+    @Query("select new com.sohag.laundry_backend.dto.ProductionDto(p.id, p.employee.id, p.employee.name, p.details, p.total, p.dateOfIssue) from Production p left join p.employee where cast(p.dateOfIssue as date) between ?1 and ?2" )
     List<ProductionDto> findAllByDateBetween(Date from, Date to);
+
+    @Query("select sum(p.total) from Production p where cast(p.dateOfIssue as date) between ?1 and ?2")
+    Double findTotalExpenseThisYear(Date from, Date to);
 }

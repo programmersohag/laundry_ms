@@ -1,18 +1,14 @@
 package com.sohag.laundry_backend.controller;
 
 import com.sohag.laundry_backend.dto.CustomerDto;
-import com.sohag.laundry_backend.dto.EmployeeDto;
 import com.sohag.laundry_backend.enums.Gender;
-import com.sohag.laundry_backend.exception.NotFoundException;
 import com.sohag.laundry_backend.service.CustomerService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -33,37 +29,37 @@ public class CustomerController {
         return "views/customer";
     }
 
-    @PostMapping
-    public String addCustomer(@ModelAttribute CustomerDto dto, RedirectAttributes redirect) {
+    @PostMapping("/add")
+    public String addCustomer(Model model, @ModelAttribute CustomerDto dto) {
         try {
-            dto = customerService.doSave(dto);
-            redirect.addFlashAttribute("message", "Added Successfully");
+            customerService.doSave(dto);
+            model.addAttribute("path", "customer");
+            return "views/notifications/insert_success";
         } catch (Exception e) {
-            redirect.addFlashAttribute("error", e.getMessage());
+            return "views/notifications/insert_failed";
         }
-        return "redirect:/customer";
     }
 
     @PostMapping("/edit")
-    public String editCustomer(@ModelAttribute CustomerDto dto, RedirectAttributes redirect) {
+    public String editCustomer(Model model, @ModelAttribute CustomerDto dto, RedirectAttributes redirect) {
         try {
-            dto = customerService.doUpdate(dto);
-            redirect.addFlashAttribute("message", "Edited Successfully");
-        } catch (NotFoundException e) {
-            redirect.addFlashAttribute("error", e.getMessage());
+            customerService.doUpdate(dto);
+            model.addAttribute("path", "customer");
+            return "views/notifications/insert_success";
+        } catch (Exception e) {
+            return "views/notifications/insert_failed";
         }
-        return "redirect:/customer";
     }
 
     @GetMapping("/delete/{customerCode}")
-    public String removeCustomer(@PathVariable String customerCode, RedirectAttributes redirect) {
+    public String removeCustomer(Model model, @PathVariable String customerCode) {
         try {
             customerService.doRemove(customerCode);
-            redirect.addFlashAttribute("message", "Deleted Successfully");
-        } catch (NotFoundException e) {
-            redirect.addFlashAttribute("error", e.getMessage());
+            model.addAttribute("path", "customer");
+            return "views/notifications/delete_success";
+        } catch (Exception e) {
+            return "views/notifications/delete_failed";
         }
-        return "redirect:/customer";
     }
 
     @GetMapping("/report-filter")

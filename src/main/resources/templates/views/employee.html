@@ -40,13 +40,15 @@
                         <tr th:each="employee, item : ${employees}">
                             <th th:text="${item.index+1}"></th>
                             <td th:text="${employee.id}"></td>
-                            <td th:text="${employee.name}"><sup th:text="${employee.gender}"></sup></td>
-
+                            <td>
+                                <span th:text="${employee.name}"></span>
+                                <sup th:text="${employee.gender}"></sup>
+                            </td>
                             <td th:text="${employee.address}"></td>
                             <td th:text="${employee.phoneNo}"></td>
-                            <td th:text="${employee.monthlySalary}"></td>
-                            <td th:text="${employee.joiningDate}"></td>
-                            <td th:text="${employee.quitDate}"></td>
+                            <td th:text="${employee.monthlySalary+'৳'}"></td>
+                            <td th:text="${#dates.format(employee.joiningDate, 'dd-MM-yyyy')}"></td>
+                            <td th:text="${#dates.format(employee.quitDate, 'dd-MM-yyyy')}"></td>
                             <td class="action-icons">
                                 <a data-toggle="modal" href="#" th:attr="data-target=${'#editEmployee'+employee.id}">
                                     <i class="fas fa-edit text-lg text-info" title="Edit"></i>
@@ -207,6 +209,18 @@
                                     <label class="control-label text-primary">Gender</label>
                                     <select class="form-control" name="gender" required>
                                         <option value="">--Please Select--</option>
+                                        <option value="MALE"
+                                                th:selected="${employee.gender == T(com.sohag.laundry_backend.enums.Gender).MALE}">
+                                            Male
+                                        </option>
+                                        <option value="FEMALE"
+                                                th:selected="${employee.gender == T(com.sohag.laundry_backend.enums.Gender).FEMALE}">
+                                            Female
+                                        </option>
+                                        <option value="OTHERS"
+                                                th:selected="${employee.gender == T(com.sohag.laundry_backend.enums.Gender).OTHERS}">
+                                            Others
+                                        </option>
                                     </select>
                                     <div class="invalid-feedback">
                                         Choose the gender of the employee!
@@ -215,7 +229,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label text-primary">Address</label>
-                                    <input class="form-control" name="alamat" placeholder='Employee Address' required
+                                    <input class="form-control" name="address" placeholder='Employee Address' required
                                            th:value="${employee.address}" type="text">
                                     <div class="invalid-feedback">
                                         Fill in the employee's address!
@@ -224,7 +238,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label text-primary">Mobile Number</label>
-                                    <input class="form-control" name="no_hp" pattern="[0-9]{11,15}"
+                                    <input class="form-control" name="phoneNo" pattern="[0-9]{11,15}"
                                            placeholder='Employees Mobile Number'
                                            required th:value="${employee.phoneNo}" type="tel">
                                     <div class="invalid-feedback">
@@ -246,7 +260,7 @@
                                     <label class="control-label text-primary">Join Date</label>
                                     <input class="form-control" name="joiningDate" placeholder='Join Date Employees'
                                            required
-                                           th:value="${employee.joiningDate}" type="date">
+                                           th:value="${#dates.format(employee.joiningDate, 'yyyy-MM-dd')}" type="date">
                                     <div class="invalid-feedback">
                                         Fill in the date of joining the employee!
                                     </div>

@@ -13,7 +13,7 @@
             <div class="card-header py-3 d-flex justify-content-between">
                 <h4 class="my-auto font-weight-bold text-primary">Expenditure Data</h4>
                 <div class="d-flex">
-                    <a class="mr-2 btn btn-warning shadow-sm" th:href="@{/expenditure/salary}"><i
+                    <a class="mr-2 btn btn-warning shadow-sm" th:href="@{/expenditure/pay/salary}"><i
                             class="fas fa-wallet fa-sm text-white-500"></i> Pay Employee Salaries</a>
                     <a class="btn btn-success shadow-sm" data-target="#addExpenditure" data-toggle="modal" href="#"><i
                             class="fas fa-plus fa-sm text-white-500"></i> Add Expenditure</a>
@@ -43,11 +43,11 @@
                             <th th:text="${item.index+1}"></th>
                             <td th:text="${expenditure.id}"></td>
                             <td th:text="${expenditure.details}"></td>
-                            <td th:text="${'$'+expenditure.total}"></td>
-                            <td th:text="${expenditure.dateOfIssue}"></td>
+                            <td th:text="${expenditure.total+'৳'}"></td>
+                            <td th:text="${#dates.format(expenditure.dateOfIssue, 'dd-MM-yyyy')}"></td>
                             <td>
                                 <span class="row px-3 text-primary text-xs" th:text="${expenditure.employeeId}"></span>
-                                <span class="row px-3" th:text="${expenditure.employeeId}"></span>
+                                <span class="row px-3" th:text="${expenditure.employeeName}"></span>
                             </td>
                             <td class="action-icons">
                                 <a data-toggle="modal" href="#"
@@ -79,7 +79,7 @@
                         </button>
                     </div>
                     <form class="user needs-validation mx-3 mb-4" method="post" name="form_add_expenditure"
-                          novalidate th:action="@{/expenditure}">
+                          novalidate th:action="@{/expenditure/add}">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="control-label text-primary" for="details">Detail</label>
@@ -102,9 +102,7 @@
                                 <label class="control-label text-primary">Employee</label>
                                 <select class="form-control" name="employeeId" required>
                                     <option value="">--Please Select--</option>
-                                    <th:block th:each="emp : ${employees}" th:inline="text">
-                                        <option th:value="${emp.id}">[[${emp.name}]]</option>
-                                    </th:block>
+                                    <option th:each="emp : ${employees}" th:value="${emp.id}" th:text="${emp.name}"></option>
                                 </select>
                                 <div class="invalid-feedback">
                                     Choose employee identity!
@@ -152,12 +150,12 @@
                             <div class="modal-body">
                                 <div class="form-group d-none">
                                     <label class="control-label text-primary">Expenditure ID</label>
-                                    <input class="form-control" name="Expenditure_id" readonly
+                                    <input class="form-control" name="id" readonly
                                            required th:value="${expenditure.id}" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label text-primary">Detail</label>
-                                    <input class="form-control" name="detail" placeholder='Expenditure Details' required
+                                    <label class="control-label text-primary">Details</label>
+                                    <input class="form-control" name="details" placeholder='Expenditure Details' required
                                            th:value="${expenditure.details}" type="text">
                                     <div class="invalid-feedback">
                                         Fill in the expense details!
@@ -175,6 +173,7 @@
                                     <label class="control-label text-primary">Employee</label>
                                     <select class="form-control" name="employeeId" required>
                                         <option value="">--Please Select--</option>
+                                        <option th:each="emp : ${employees}" th:value="${emp.id}" th:text="${emp.name}" th:selected="${emp.id==expenditure.employeeId}"></option>
                                     </select>
                                     <div class="invalid-feedback">
                                         Choose employee identity!
@@ -183,9 +182,9 @@
 
                                 <div class="form-group">
                                     <label class="control-label text-primary">Expenditure Date</label>
-                                    <input class="form-control" name="tgl_Expenditure" placeholder='Expenditure Date'
+                                    <input class="form-control" name="dateOfIssue" placeholder='Expenditure Date'
                                            required
-                                           th:value="${expenditure.dateOfIssue}" type="date">
+                                           th:value="${#dates.format(expenditure.dateOfIssue, 'yyyy-MM-dd')}" type="date">
                                     <div class="invalid-feedback">
                                         Enter the exp. date!
                                     </div>
