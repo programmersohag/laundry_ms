@@ -44,6 +44,11 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("/vendor/**", "/css/**", "/js/**", "/img/**").permitAll()
+                                .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui.html"
+                                ).permitAll()
                                 .requestMatchers("/user/signup").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(form ->

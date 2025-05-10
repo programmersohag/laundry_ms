@@ -57,8 +57,7 @@ spring.datasource.password=password
     java -jar build/libs/laundry-management-0.0.1-SNAPSHOT.jar
 
 ## Licence
-This project is licensed under the MIT License - see the LICENSE file for details.
-
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 ## 👨‍💻 Author
 - Md. Sohaq Ali (ID: 23314)
 - Mohammad Ziaul Hoq (ID: 23319)
